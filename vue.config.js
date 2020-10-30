@@ -6,17 +6,28 @@ function resolve(dir) {
 }
 
 module.exports = {
-  devServer: {},
+  devServer: {
+    host: 'localhost',
+    port: '8080',
+    proxy: {
+      '/api': {
+        target: 'https://restcountries.eu/rest/v2',
+        changeOrigin: true,
+        pathRewrite: {
+          '^/api': ''
+        }
+      }
+    }
+  },
+
+  lintOnSave: true,
   chainWebpack(config) {
     config.resolve.alias
       .set('components', resolve('src/components'))
       .set('common', resolve('src/common'))
       .set('api', resolve('src/api'))
       .set('base', resolve('src/base'));
-
-    config
-      .plugin('context')
-      .use(webpack.ContextReplacementPlugin, [/moment[/\\]locale$/, /zh-cn/]);
   },
-  publicPath: ''
+  publicPath: '',
+  outputDir: 'dist'
 };
