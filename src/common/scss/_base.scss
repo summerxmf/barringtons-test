@@ -1,10 +1,16 @@
-@import "mixins";
+@import 'mixins';
 
-body, button, input, select, textarea {
+body,
+button,
+input,
+select,
+textarea {
   color: #5d656b;
   font-size: $font-size-base;
-  font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Helvetica Neue", STHeiti, "Microsoft Yahei", Tahoma, Simsun, sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, 'PingFang SC',
+    'Helvetica Neue', STHeiti, 'Microsoft Yahei', Tahoma, Simsun, sans-serif;
   line-height: 1;
+  outline: none;
 }
 body {
   background-color: #eee;
@@ -18,7 +24,8 @@ a {
   }
 }
 
-html, body {
+html,
+body {
   overflow: hidden;
   width: 100%;
   height: 100%;

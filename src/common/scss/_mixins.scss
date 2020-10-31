@@ -1,4 +1,4 @@
-@import "variables";
+@import 'variables';
 
 // flex-center
 @mixin flex-center($direction: row) {
@@ -9,9 +9,28 @@
 }
 
 // flex-between
-@mixin flex-between(){
+@mixin flex-between() {
   display: flex;
   justify-content: space-between;
+  align-items: center;
+}
+
+// flex-around
+@mixin flex-around() {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+// flex-start
+@mixin flex-start() {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+// flex-end
+@mixin flex-end() {
+  display: flex;
+  justify-content: flex-end;
   align-items: center;
 }
 

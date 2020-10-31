@@ -7,8 +7,8 @@ function resolve(dir) {
 
 module.exports = {
   devServer: {
-    host: 'localhost',
-    port: '8080',
+    // host: 'localhost',
+    // port: '8080',
     proxy: {
       '/api': {
         target: 'https://restcountries.eu/rest/v2',

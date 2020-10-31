@@ -22,8 +22,12 @@
             :key="index"
             class="list-group-item"
           >
-            <!-- <img class="avatar" v-lazy="item.avatar"> -->
-            <span class="name">{{ item.name }}</span>
+            <img class="flag" :src="item.flag" />
+            <div class="item-info">
+              <p class="name">{{ item.name }}</p>
+              <p class="name-native">({{ item.nativeName }})</p>
+            </div>
+            <i class="iconfont icon-more"></i>
           </li>
         </uL>
       </li>
@@ -156,12 +160,12 @@ export default {
     },
     scrollY (newY) {
       const listHeight = this.listHeight
-      // 当滚动到顶部，newY>0
+      // when scroll to top，newY>0
       if (newY > 0) {
         this.currentIndex = 0
         return
       }
-      // 在中间部分滚动
+      // scroll in middle
       for (let i = 0; i < listHeight.length - 1; i++) {
         let height1 = listHeight[i]
         let height2 = listHeight[i + 1]
@@ -171,7 +175,7 @@ export default {
           return
         }
       }
-      // 当滚动到底部，且-newY大于最后一个元素的上限
+      // scroll to bottom, and the value of -newY > the hight of last item
       this.currentIndex = listHeight.length - 2
     },
     diff (newVal) {
@@ -202,6 +206,7 @@ export default {
   .list-group {
     padding-bottom: 30px;
     .list-group-title {
+      width: 100%;
       height: 30px;
       line-height: 30px;
       padding-left: 20px;
@@ -210,18 +215,37 @@ export default {
       background: $color-highlight-background;
     }
     .list-group-item {
-      display: flex;
-      align-items: center;
-      padding: 20px 0 0 30px;
-      .avatar {
-        width: 50px;
-        height: 50px;
-        border-radius: 50%;
+      @include flex-between();
+      padding: 20px 0;
+      margin-left: 30px;
+      margin-right: 30px;
+      border-bottom: 1px solid $color-border;
+
+      &:last-child {
+        border-bottom: none;
       }
-      .name {
+
+      .flag {
+        width: 50px;
+        height: 67%;
+        /* border-radius: 50%; */
+      }
+      .item-info {
+        flex: 1;
         margin-left: 20px;
-        color: $color-text-l;
-        font-size: $font-size-medium;
+        color: $color-text;
+        @include flex-center(column);
+        align-items: flex-start;
+        .name {
+          font-size: $font-size-large;
+        }
+        .name-native {
+          margin-top: 5px;
+          font-size: $font-size-small;
+        }
+      }
+      .iconfont {
+        margin-right: 0px;
       }
     }
   }
@@ -232,7 +256,7 @@ export default {
     top: 50%;
     transform: translateY(-50%);
     width: 20px;
-    padding: 20px 0;
+    padding: 10px 0;
     border-radius: 10px;
     text-align: center;
     background: $color-background-d;
