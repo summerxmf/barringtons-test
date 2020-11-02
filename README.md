@@ -1,8 +1,8 @@
 # barringtons-test
 
 # About this project
-This is a Vue front-end project
-There are there pages: country, contry-detail and payment
+This is a Vue front-end project.
+There are there pages: country, contry-detail and payment.
 The page of country and country detail is created for mobile screen size, but the payment page is responsive for multiple screen.
 
 ## Project setup
