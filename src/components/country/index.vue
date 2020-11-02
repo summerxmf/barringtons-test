@@ -1,8 +1,8 @@
 <template>
   <div class="countries">
     <b-header
-      ><h1 class="title">Countries Of The World</h1>
-      <div class="payment" @click="toPayment">
+      ><h1 class="title" slot="center">Countries Of The World</h1>
+      <div class="payment" slot="right" @click="toPayment">
         <span>Payment</span>
         <i class="iconfont icon-payment"></i>
       </div>
@@ -40,8 +40,13 @@ export default {
   },
   created() {
     getList().then((data) => {
+      // for test
+      console.log('country list from api: ', data);
+
       this.countryList = this._sortList(data);
       this.listCopy = this.countryList;
+      // for test
+      console.log('sorted country list: ', this.countryList);
     });
   },
 
@@ -53,11 +58,17 @@ export default {
       }
       searchCountry(keywords).then((data) => {
         this.countryList = this._sortList(data);
+        console.log(this.countryList);
       });
     },
     selectCountry(country) {
       this.$router.push({
-        path: `/country/${country.alpha3Code}`
+        name: 'CountryDetail',
+        params: {
+          code: country.alpha3Code,
+          country
+        }
+        // `/country/${country.alpha3Code}`
       });
     },
     toPayment() {
@@ -106,6 +117,7 @@ export default {
 .title {
   font-size: $font-size-large;
   font-weight: 500;
+  margin-right: 30px;
 }
 
 .search-box {

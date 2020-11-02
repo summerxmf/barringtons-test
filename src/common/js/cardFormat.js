@@ -360,6 +360,59 @@ const cardFormatUtils = {
     }
   },
 
+  safeValName: function(value, target, e) {
+    if (e.inputType === 'deleteContentBackward') {
+      return;
+    }
+    var cursor;
+    try {
+      cursor = target.selectionStart;
+    } catch (error) {
+      cursor = null;
+    }
+    var last = target.value;
+    target.value = value;
+    value = target.value;
+    if (cursor !== null && document.activeElement == target) {
+      if (cursor === last.length) {
+        cursor = target.value.length;
+      }
+
+      // This hack looks for scenarios where we are changing an input's value such
+      // that "X| " is replaced with " |X" (where "|" is the cursor). In those
+      // scenarios, we want " X|".
+      //
+      // For example:
+      // 1. Input field has value "4444| "
+      // 2. User types "1"
+      // 3. Input field has value "44441| "
+      // 4. Reformatter changes it to "4444 |1"
+      // 5. By incrementing the cursor, we make it "4444 1|"
+      //
+      // This is awful, and ideally doesn't go here, but given the current design
+      // of the system there does not appear to be a better solution.
+      //
+      // Note that we can't just detect when the cursor-1 is " ", because that
+      // would incorrectly increment the cursor when backspacing, e.g. pressing
+      // backspace in this scenario: "4444 1|234 5".
+      if (last !== value) {
+        var prevPair = last.slice(cursor - 1, +cursor + 1 || undefined);
+        var currPair = target.value.slice(cursor - 1, +cursor + 1 || undefined);
+        var digit = value[cursor];
+        if (
+          /[a-zA-Z',. -]/.test(digit) &&
+          prevPair === digit + ' ' &&
+          currPair === ' ' + digit
+        ) {
+          cursor = cursor + 1;
+        }
+      }
+
+      target.selectionStart = cursor;
+      return (target.selectionEnd = cursor);
+    }
+  },
+
   // Replace Full-Width Chars
 
   replaceFullWidthChars: function(str) {
@@ -688,6 +741,31 @@ const cardFormatUtils = {
     return val.length <= 4;
   },
 
+  restrictCardName: function(e) {
+    var target = e.currentTarget;
+    var digit = String.fromCharCode(e.which);
+    if (!/^\[a-zA-Z]+$/.test(digit)) {
+      return;
+    }
+    if (cardFormatUtils.hasTextSelected(target)) {
+      return;
+    }
+
+    var val = target.value + digit;
+    return val.length <= 50;
+  },
+  // Format CardName
+  reFormatCardName: function(e) {
+    var target = e.currentTarget;
+    return setTimeout(function() {
+      var value = target.value;
+      // value = cardFormatUtils.replaceFullWidthChars(value);
+      value = value.replace(/[a-zA-Z',. -]/g, '');
+      // value = value.replace(/[',. -]/g, '');
+      return cardFormatUtils.safeValName(value, target, e);
+    });
+  },
+
   setCardType: function(e) {
     var target = e.currentTarget;
     var val = target.value;
@@ -731,6 +809,12 @@ const format = {
       el.currentTarget.dispatchEvent(new Event('keyup'));
       el.currentTarget.dispatchEvent(new Event('change'));
     }, 100);
+  },
+  formatCardName: function(el) {
+    el.addEventListener('keypress', cardFormatUtils.restrictCardName);
+    // el.addEventListener('paste', cardFormatUtils.reFormatCardName);
+    // el.addEventListener('change', cardFormatUtils.reFormatCardName);
+    el.addEventListener('input', cardFormatUtils.reFormatCardName);
   },
 
   formatCardCVC: function(el) {

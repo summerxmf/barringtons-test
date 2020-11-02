@@ -11,17 +11,19 @@ import Payment from 'components/payment';
 // const CountryDetail = () => import('components/country-detail');
 
 const routes = [
-  {
-    path: '/',
-    redirect: '/country'
-  },
+  // {
+  //   path: '/',
+  //   redirect: '/country'
+  // },
   {
     path: '/country',
     component: Country,
+    name: 'Country',
     children: [
       {
         path: ':code',
-        component: CountryDetail
+        component: CountryDetail,
+        name: 'CountryDetail'
       }
     ]
   },
@@ -29,6 +31,10 @@ const routes = [
   {
     path: '/payment',
     component: Payment
+  },
+  {
+    path: '*',
+    redirect: '/country'
   }
 ];
 

@@ -1,6 +1,14 @@
 <template>
   <div class="b-header">
-    <slot></slot>
+    <div class="b-header-left" v-if="$slots.left">
+      <slot name="left"></slot>
+    </div>
+    <div class="b-header-center" v-if="$slots.center">
+      <slot name="center"></slot>
+    </div>
+    <div class="b-header-right" v-if="$slots.right">
+      <slot name="right"></slot>
+    </div>
     <!-- <a class="icon" target="_blank" href="https://www.barringtongroup.com.au/">
       <img src="~common/images/barringtons250x50.png" alt="" />
     </a>
@@ -17,9 +25,37 @@ export default {
 </script>
 <style lang="scss" scoped>
 @import '~common/scss/mixins';
-/* 样式还需改变 */
 .b-header {
-  /* position: relative; */
+  position: relative;
+  @include flex-between();
+  height: 50px;
+  background: $header-bgc;
+  color: $color-text-l;
+
+  &-left {
+    margin-left: 10px;
+    ~ .mine-navbar-right {
+      position: static;
+    }
+  }
+  &-center {
+    flex: 1;
+    margin: 0 10px;
+    ~ .mine-navbar-right {
+      position: static;
+    }
+    @include flex-center();
+  }
+  &-right {
+    position: absolute;
+    right: 0;
+    @include flex-center();
+    height: 100%;
+    margin-right: 10px;
+  }
+}
+/* .b-header {
+  position: relative;
   height: 50px;
   text-align: left;
   font-size: 12px;
@@ -27,5 +63,5 @@ export default {
   color: #fff;
   background: $header-bgc;
   @include flex-between();
-}
+} */
 </style>

@@ -1,128 +1,131 @@
 <template>
-  <div class="payment">
-    <b-header>
-      <div class="toCountry" @click="toCountry">
-        <i class="iconfont icon-back"></i>
-      </div>
-    </b-header>
-    <div class="container">
-      <div class="row">
-        <div class="col-12">
-          <form>
-            <div class="row">
-              <div class="col-12 col-lg-6">
-                <div class="form-group">
-                  <label>Cardholder's Name:</label>
-                  <input
-                    ref="cardNameInput"
-                    :data-error="cardErrors.cardName ? true : false"
-                    v-model="cardName"
-                    maxlength="50"
-                    class="form-control"
-                    @blur="cardNameBlur"
-                  />
-                  <div v-if="cardErrors.cardName" class="error">
-                    <small>{{ cardErrors.cardName }}</small>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="row">
-              <div class="col-12 col-lg-6">
-                <div class="form-group">
-                  <label>Email Address:</label>
-                  <input
-                    ref="emailInput"
-                    :data-error="cardErrors.email ? true : false"
-                    v-model="email"
-                    maxlength="50"
-                    type="email"
-                    class="form-control"
-                    placeholder="email@address.com"
-                    @blur="emailBlur"
-                  />
-                  <div v-if="cardErrors.email" class="error">
-                    <small>{{ cardErrors.email }}</small>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="row">
-              <div class="col-12">
-                <div class="form-group">
-                  <label>Card Number:</label>
-                  <div class="input-group">
-                    <span class="input-group-text"
-                      ><i :class="cardBrandClass"></i
-                    ></span>
+  <transition name="fade">
+    <div class="payment">
+      <b-header>
+        <div class="toCountry" slot="left" @click="toCountry">
+          <i class="iconfont icon-back"></i>
+        </div>
+        <h1 class="title" slot="center">Payment</h1>
+      </b-header>
+      <div class="container">
+        <div class="row">
+          <div class="col-12">
+            <form>
+              <div class="row">
+                <div class="col-12 col-lg-6">
+                  <div class="form-group">
+                    <label>Cardholder's Name:</label>
                     <input
-                      ref="cardNumInput"
-                      :data-error="cardErrors.cardNumber ? true : false"
-                      v-model="cardNumber"
-                      type="tel"
+                      ref="cardNameInput"
+                      :data-error="cardErrors.cardName ? true : false"
+                      v-model="cardName"
+                      maxlength="50"
                       class="form-control"
-                      placeholder="#### #### #### ####"
-                      v-cardFormat:formatCardNumber
+                      @blur="cardNameBlur"
                     />
-                  </div>
-                  <div v-if="cardErrors.cardNumber" class="error">
-                    <small>{{ cardErrors.cardNumber }}</small>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="row">
-              <div class="col-12 col-lg-6">
-                <div class="form-group">
-                  <label>Card Expiration:</label>
-                  <input
-                    ref="cardExpInput"
-                    id="card-exp"
-                    :data-error="cardErrors.cardExpiry ? true : false"
-                    v-model="cardExpiry"
-                    maxlength="10"
-                    class="form-control"
-                    placeholder="Month / Year"
-                    v-cardFormat:formatCardExpiry
-                  />
-                  <div v-if="cardErrors.cardExpiry" class="error">
-                    <small>{{ cardErrors.cardExpiry }}</small>
+                    <div v-if="cardErrors.cardName" class="error">
+                      <small>{{ cardErrors.cardName }}</small>
+                    </div>
                   </div>
                 </div>
               </div>
-              <div class="col-12 col-lg-6">
-                <div class="form-group">
-                  <label>Card CVC:</label>
-                  <input
-                    ref="cardCvcInput"
-                    :data-error="cardErrors.cardCvc ? true : false"
-                    v-model="cardCvc"
-                    class="form-control"
-                    v-cardFormat:formatCardCVC
-                  />
-                  <div v-if="cardErrors.cardCvc" class="error">
-                    <small>{{ cardErrors.cardCvc }}</small>
+              <div class="row">
+                <div class="col-12 col-lg-6">
+                  <div class="form-group">
+                    <label>Email Address:</label>
+                    <input
+                      ref="emailInput"
+                      :data-error="cardErrors.email ? true : false"
+                      v-model="email"
+                      maxlength="50"
+                      type="email"
+                      class="form-control"
+                      placeholder="email@address.com"
+                      @blur="emailBlur"
+                    />
+                    <div v-if="cardErrors.email" class="error">
+                      <small>{{ cardErrors.email }}</small>
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
-            <div class="row">
-              <div class="col-12">
-                <button type="button" class="btn" @click="validate">
-                  Validate Card Details
-                </button>
-                <button type="button" class="btn" @click="reset">
-                  Reset
-                </button>
+              <div class="row">
+                <div class="col-12">
+                  <div class="form-group">
+                    <label>Card Number:</label>
+                    <div class="input-group">
+                      <span class="input-group-text"
+                        ><i :class="cardBrandClass"></i
+                      ></span>
+                      <input
+                        ref="cardNumInput"
+                        :data-error="cardErrors.cardNumber ? true : false"
+                        v-model="cardNumber"
+                        type="tel"
+                        class="form-control"
+                        placeholder="#### #### #### ####"
+                        v-cardFormat:formatCardNumber
+                      />
+                    </div>
+                    <div v-if="cardErrors.cardNumber" class="error">
+                      <small>{{ cardErrors.cardNumber }}</small>
+                    </div>
+                  </div>
+                </div>
               </div>
-            </div>
-          </form>
-          <hr />
-          <p class="message">{{ message }}</p>
+              <div class="row">
+                <div class="col-12 col-lg-6">
+                  <div class="form-group">
+                    <label>Card Expiration:</label>
+                    <input
+                      ref="cardExpInput"
+                      id="card-exp"
+                      :data-error="cardErrors.cardExpiry ? true : false"
+                      v-model="cardExpiry"
+                      maxlength="10"
+                      class="form-control"
+                      placeholder="Month / Year"
+                      v-cardFormat:formatCardExpiry
+                    />
+                    <div v-if="cardErrors.cardExpiry" class="error">
+                      <small>{{ cardErrors.cardExpiry }}</small>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-12 col-lg-6">
+                  <div class="form-group">
+                    <label>Card CVC:</label>
+                    <input
+                      ref="cardCvcInput"
+                      :data-error="cardErrors.cardCvc ? true : false"
+                      v-model="cardCvc"
+                      class="form-control"
+                      v-cardFormat:formatCardCVC
+                    />
+                    <div v-if="cardErrors.cardCvc" class="error">
+                      <small>{{ cardErrors.cardCvc }}</small>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-12">
+                  <button type="button" class="btn" @click="validate">
+                    Validate Card Details
+                  </button>
+                  <button type="button" class="btn" @click="reset">
+                    Reset
+                  </button>
+                </div>
+              </div>
+            </form>
+            <hr />
+            <p class="message">{{ message }}</p>
+          </div>
         </div>
       </div>
     </div>
-  </div>
+  </transition>
 </template>
 <script>
 import format from 'common/js/cardFormat';
@@ -181,8 +184,12 @@ export default {
       if (!format.validateCardCVC(this.cardCvc)) {
         this.cardErrors.cardCvc = 'Invalid CVC.';
       }
-      if (this.cardErrors.length > 0) {
-        console.log(this.cardErrors);
+      if (this.cardErrors) {
+        // console.log(this.cardErrors);
+        this.message = 'Validation failed.';
+        for (let key in this.cardErrors) {
+          console.log(key + ': ' + this.cardErrors[key]);
+        }
       } else {
         this.message = 'Validation succeed.';
         console.log("Card holder's name: ", this.cardName);
@@ -251,6 +258,16 @@ export default {
 <style lang="scss" scoped>
 @import '~common/scss/mixins';
 $inputWidth: 300px;
+
+.fade-enter-active,
+.fade-leave-active {
+  transition: all 0.3s;
+}
+.fade-enter,
+.fade-leave-to {
+  opacity: 0;
+}
+
 .payment {
   position: absolute;
   width: 100%;
@@ -258,9 +275,18 @@ $inputWidth: 300px;
   top: 0;
   left: 0;
   background: $color-background;
-  .iconfont {
+  .toCountry {
+    width: 50px;
+    height: 100%;
+    .iconfont {
+      font-size: $font-size-large;
+      font-weight: bold;
+    }
+  }
+  .title {
     font-size: $font-size-large;
-    font-weight: bold;
+    font-weight: 500;
+    margin-right: 50px;
   }
   .container {
     margin-top: 30px;
